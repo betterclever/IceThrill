@@ -7,9 +7,15 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.betterclever.icethrill.objects.Ball;
+import com.betterclever.icethrill.objects.IceBall;
+import com.betterclever.icethrill.objects.SuperBall;
+
+import java.util.ArrayList;
 
 /**
  * Created by betterclever on 20/11/16.
@@ -29,6 +35,8 @@ public class FieldOfPlay implements Screen {
     Vector2 position;
     Vector2 velocity;
 
+    ArrayList<Ball> balls;
+
     @Override
     public void show() {
         spriteBatch = new SpriteBatch();
@@ -38,8 +46,23 @@ public class FieldOfPlay implements Screen {
         renderer.setAutoShapeType(true);
 
         accG = new Vector2(0,-50);
-        velocity = new Vector2(100,100);
         position = new Vector2(10,10);
+
+        balls = new ArrayList<Ball>();
+
+        for (int i = 0; i < 30; i++) {
+
+            velocity = new Vector2( (float) Math.random()*200, (float) Math.random()*200);
+
+            if(i%2 == 0){
+                balls.add(new SuperBall(renderer,velocity));
+            }
+            else {
+                balls.add(new IceBall(renderer,velocity));
+            }
+
+        }
+
         //Gdx.input.setInputProcessor((InputProcessor) this);
     }
 
@@ -50,16 +73,12 @@ public class FieldOfPlay implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         viewport.apply();
-        renderer.begin(ShapeRenderer.ShapeType.Filled);
 
-        velocity.mulAdd(accG,delta);
-        position.mulAdd(velocity,delta);
-
-        Gdx.app.log("Delta", String.valueOf(delta));
-        renderer.setColor(Color.CHARTREUSE);
-
-        renderer.circle(position.x,position.y,10,50);
-        renderer.end();
+        for (Ball b: balls){
+            b.updatePosition(delta);
+            b.updateVelocity(delta);
+            b.render();
+        }
 
     }
 
