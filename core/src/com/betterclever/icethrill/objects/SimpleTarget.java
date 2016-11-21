@@ -23,8 +23,8 @@ public class SimpleTarget extends Target {
 
         timePassed += delta ;
 
-        Gdx.app.log("timePassed", String.valueOf(timePassed));
-        Gdx.app.log("position",getPosition().toString());
+        //Gdx.app.log("timePassed", String.valueOf(timePassed));
+        //Gdx.app.log("position",getPosition().toString());
 
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         renderer.setColor(Color.CYAN);
