@@ -3,6 +3,10 @@ package com.betterclever.icethrill.objects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
@@ -12,19 +16,22 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Cannon  {
 
-    ShapeRenderer renderer;
+    SpriteBatch spriteBatch;
 
     public float getAngle() {
         return angle;
     }
 
     float angle;
+    Texture image;
     boolean flicking,following;
     Vector2 flickStart,targetPosition;
 
-    public Cannon(ShapeRenderer renderer){
+    public Cannon(SpriteBatch batch){
         this.angle = 45;
-        this.renderer = renderer;
+        this.spriteBatch = batch;
+        image = new Texture("my_canon.png");
+
     }
 
     public void render(){
@@ -39,7 +46,11 @@ public class Cannon  {
 
         clampAngle();
 
-        renderer.begin(ShapeRenderer.ShapeType.Filled);
+        spriteBatch.begin();
+        spriteBatch.draw(new TextureRegion(image),0,0,67,51,150,150,1,1,-angle+60);
+        spriteBatch.end();
+
+        /*renderer.begin(ShapeRenderer.ShapeType.Filled);
         renderer.setColor(Color.CHARTREUSE);
 
         renderer.rect(-40, 0,
@@ -48,7 +59,7 @@ public class Cannon  {
                 1.0f, 1.0f,
                 -angle);
 
-        renderer.end();
+        renderer.end();*/
 
     }
 
@@ -62,6 +73,7 @@ public class Cannon  {
 
         angle -= angleDiff;
         clampAngle();
+
 
         return angleDiff;
     }
@@ -90,11 +102,17 @@ public class Cannon  {
 
     private Vector2 calculateTopOfCanon(){
 
-        int x = (-40 + 40) ;
-        int y = (180 + 0) ;
+        int x = (108) ;
+        int y = (145) ;
 
         Vector2 v = new  Vector2(x,y);
-        v.rotate(-angle);
+        Vector2 shifted = new Vector2(67,51);
+
+        v = v.sub(shifted);
+
+        v.rotate(-angle + 30);
+
+        v.add(shifted);
 
         return  v;
     }

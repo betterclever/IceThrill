@@ -5,8 +5,12 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
@@ -14,7 +18,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.betterclever.icethrill.objects.Ball;
 import com.betterclever.icethrill.objects.IceBall;
 import com.betterclever.icethrill.objects.SimpleTarget;
@@ -31,7 +37,6 @@ import java.util.ArrayList;
 public class FieldOfPlay extends InputAdapter implements Screen {
 
     ExtendViewport viewport;
-    SpriteBatch spriteBatch;
     ShapeRenderer renderer;
     Cannon cannon;
     Vector2 accG;
@@ -44,6 +49,9 @@ public class FieldOfPlay extends InputAdapter implements Screen {
     Vector2 position;
     Vector2 velocity;
 
+    Texture background;
+    SpriteBatch spriteBatch;
+
     float angleOnTouchDown = 0.0f;
 
     DelayedRemovalArray<Ball> balls;
@@ -51,13 +59,15 @@ public class FieldOfPlay extends InputAdapter implements Screen {
     DelayedRemovalArray<Target> targets;
 
     boolean dragging = false;
+    Animation anim;
+
+    Sprite sprite;
+    //Camera camera;
 
     @Override
     public void show() {
         spriteBatch = new SpriteBatch();
         viewport = new ExtendViewport(Constants.WORLD_WIDTH,Constants.WORLD_HEIGHT);
-        //viewport = new FitViewport(Constants.WORLD_WIDTH,Constants.WORLD_HEIGHT);
-
         renderer = new ShapeRenderer();
         renderer.setAutoShapeType(true);
         accG = new Vector2(0,-50);
@@ -65,12 +75,19 @@ public class FieldOfPlay extends InputAdapter implements Screen {
 
         balls = new DelayedRemovalArray<Ball>();
 
-        cannon = new Cannon(renderer);
+        cannon = new Cannon(spriteBatch);
 
         targets = new DelayedRemovalArray<Target>();
 
+        background = new Texture("volcano.png");
+        sprite = new Sprite(background);
+
+        //viewport.update(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+
         Gdx.input.setInputProcessor(this);
+        //anim = GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("assets/background.gif").read());
     }
+
 
     @Override
     public void render(float delta) {
@@ -80,14 +97,21 @@ public class FieldOfPlay extends InputAdapter implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        //Gdx.gl.glViewport(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         viewport.apply();
 
+        spriteBatch.begin();
+        sprite.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        Gdx.app.log("Dim", "Width:" + Gdx.graphics.getWidth() + " Height: " + Gdx.graphics.getHeight());
+        spriteBatch.draw(sprite,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        spriteBatch.end();
 
         for (Ball b: balls){
             b.updatePosition(delta);
             b.updateVelocity(delta);
             b.render();
         }
+
 
         balls.begin();
 
