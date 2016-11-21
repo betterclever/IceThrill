@@ -1,5 +1,6 @@
 package com.betterclever.icethrill.objects;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.betterclever.icethrill.Constants;
@@ -14,12 +15,13 @@ public abstract class Ball implements Movement {
     private int radius;
     public Vector2 position;
     public Vector2 velocity;
+    public float angle = 0;
 
-    protected ShapeRenderer renderer;
+    protected SpriteBatch spriteBatch;
 
-    public Ball(int radius, ShapeRenderer renderer, Vector2 velocity, Vector2 position){
+    public Ball(int radius, SpriteBatch spriteBatch, Vector2 velocity, Vector2 position){
         this.radius = radius;
-        this.renderer = renderer;
+        this.spriteBatch = spriteBatch;
         this.velocity = velocity;
         this.position = position;
     }
@@ -39,6 +41,15 @@ public abstract class Ball implements Movement {
     @Override
     public void updatePosition(float delta){
         position = position.mulAdd(velocity,delta);
+    }
+
+    @Override
+    public void updateAngle(float delta) {angle = angle - delta*100;}
+
+    public void updateAll(float delta){
+        updatePosition(delta);
+        updateVelocity(delta);
+        updateAngle(delta);
     }
 
 }

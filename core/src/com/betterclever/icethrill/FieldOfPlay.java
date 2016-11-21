@@ -107,8 +107,7 @@ public class FieldOfPlay extends InputAdapter implements Screen {
         spriteBatch.end();
 
         for (Ball b: balls){
-            b.updatePosition(delta);
-            b.updateVelocity(delta);
+            b.updateAll(delta);
             b.render();
         }
 
@@ -116,7 +115,7 @@ public class FieldOfPlay extends InputAdapter implements Screen {
         balls.begin();
 
         for (int i = 0; i < balls.size ; i++) {
-            if(balls.get(i).position.y < 0){
+            if(balls.get(i).position.y < 50){
                 balls.removeIndex(i);
             }
         }
@@ -126,7 +125,6 @@ public class FieldOfPlay extends InputAdapter implements Screen {
         for (Target t : targets) {
             t.render(delta);
         }
-
 
         timePassed += delta;
 
@@ -214,12 +212,12 @@ public class FieldOfPlay extends InputAdapter implements Screen {
 
             float diff = cannon.getAngle() - angleOnTouchDown;
             if(Math.abs(diff) < 10.0){
-                balls.add(cannon.fire(renderer));
+                balls.add(cannon.fire(spriteBatch,true));
             }
             dragging = false;
         }
         else {
-            balls.add(cannon.fire(renderer));
+            balls.add(cannon.fire(spriteBatch,true));
         }
         return true;
     }
@@ -228,8 +226,13 @@ public class FieldOfPlay extends InputAdapter implements Screen {
 
         if(keycode == Input.Keys.X){
             Gdx.app.log("tag","keydown");
-            balls.add(cannon.fire(renderer));
+            balls.add(cannon.fire(spriteBatch,true));
         }
+        if(keycode == Input.Keys.Z){
+            Gdx.app.log("tag","keydown");
+            balls.add(cannon.fire(spriteBatch,false));
+        }
+
 
 		return false;
 	}

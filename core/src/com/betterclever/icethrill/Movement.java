@@ -10,4 +10,5 @@ public interface Movement {
 
     void updateVelocity(float delta);
     void updatePosition(float delta);
+    void updateAngle(float delta);
 }

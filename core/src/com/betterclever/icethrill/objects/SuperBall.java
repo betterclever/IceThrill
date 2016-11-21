@@ -1,6 +1,9 @@
 package com.betterclever.icethrill.objects;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.betterclever.icethrill.Constants;
@@ -11,19 +14,17 @@ import com.betterclever.icethrill.Constants;
 
 public class SuperBall extends Ball{
 
-    public SuperBall(ShapeRenderer renderer, Vector2 velocity, Vector2 position) {
-        super(Constants.RADIUS_SUPERBALL,renderer,velocity,position);
+    TextureRegion textureRegion;
+    public SuperBall(SpriteBatch spriteBatch, Vector2 velocity, Vector2 position) {
+        super(Constants.RADIUS_SUPERBALL,spriteBatch,velocity,position);
+        textureRegion = new TextureRegion(new Texture("icicle.png"));
     }
 
     @Override
     public void render() {
 
-        renderer.begin(ShapeRenderer.ShapeType.Filled);
-        renderer.setColor(Color.GREEN);
-
-        renderer.circle(position.x,position.y,getRadius(),64);
-
-        renderer.end();
-
+        spriteBatch.begin();
+        spriteBatch.draw(textureRegion,position.x,position.y,getRadius(),getRadius(),2*getRadius(),2*getRadius(),1,1,angle);
+        spriteBatch.end();
     }
 }

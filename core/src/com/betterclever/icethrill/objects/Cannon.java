@@ -24,6 +24,7 @@ public class Cannon  {
 
     float angle;
     Texture image;
+
     boolean flicking,following;
     Vector2 flickStart,targetPosition;
 
@@ -118,9 +119,15 @@ public class Cannon  {
     }
 
 
-    public Ball fire(ShapeRenderer renderer) {
+    public Ball fire(SpriteBatch spriteBatch,boolean type) {
 
-        Ball b = new IceBall(renderer,new Vector2(0,300).rotate(-angle),calculateTopOfCanon());
+        Ball b;
+        if(type) {
+            b = new IceBall(spriteBatch, new Vector2(0, 500).rotate(-angle), calculateTopOfCanon());
+        }
+        else {
+            b = new SuperBall(spriteBatch, new Vector2(0, 500).rotate(-angle), calculateTopOfCanon());
+        }
         return b;
     }
 }
