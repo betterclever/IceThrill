@@ -13,6 +13,11 @@ import com.badlogic.gdx.math.Vector2;
 public class Cannon  {
 
     ShapeRenderer renderer;
+
+    public float getAngle() {
+        return angle;
+    }
+
     float angle;
     boolean flicking,following;
     Vector2 flickStart,targetPosition;
@@ -32,6 +37,8 @@ public class Cannon  {
             angle += 0.4;
         }
 
+        clampAngle();
+
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         renderer.setColor(Color.CHARTREUSE);
 
@@ -45,7 +52,7 @@ public class Cannon  {
 
     }
 
-    public void updateAngle(Vector2 targetPosition){
+    public float updateAngle(Vector2 targetPosition){
 
         Vector2 v = calculateMidOfCanon();
 
@@ -54,7 +61,20 @@ public class Cannon  {
         Gdx.app.log("angleDiff", String.valueOf(angleDiff));
 
         angle -= angleDiff;
+        clampAngle();
 
+        return angleDiff;
+    }
+
+    private void clampAngle(){
+
+        if(angle >= 70.0f){
+            angle = 70.0f;
+        }
+
+        if(angle <= 10) {
+            angle = 10;
+        }
     }
 
     private Vector2 calculateMidOfCanon(){
@@ -68,7 +88,21 @@ public class Cannon  {
         return  v;
     }
 
+    private Vector2 calculateTopOfCanon(){
+
+        int x = (-40 + 40) ;
+        int y = (180 + 0) ;
+
+        Vector2 v = new  Vector2(x,y);
+        v.rotate(-angle);
+
+        return  v;
+    }
 
 
+    public Ball fire(ShapeRenderer renderer) {
 
+        Ball b = new IceBall(renderer,new Vector2(0,300).rotate(-angle),calculateTopOfCanon());
+        return b;
+    }
 }

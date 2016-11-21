@@ -10,7 +10,7 @@ public class Constants {
 
     public static final float WORLD_HEIGHT = 100;
     public static final float WORLD_WIDTH = 100;
-    public static final Vector2 ACC_G = new Vector2(0,-50);
+    public static final Vector2 ACC_G = new Vector2(0,-200);
     public static final int RADIUS_ICEBALL = 10;
     public static final int RADIUS_SUPERBALL = 20;
     public static final int SIMPLE_TARGET_HEALTH =  100;

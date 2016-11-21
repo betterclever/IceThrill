@@ -17,11 +17,11 @@ public abstract class Ball implements Movement {
 
     protected ShapeRenderer renderer;
 
-    public Ball(int radius, ShapeRenderer renderer, Vector2 velocity){
+    public Ball(int radius, ShapeRenderer renderer, Vector2 velocity, Vector2 position){
         this.radius = radius;
         this.renderer = renderer;
         this.velocity = velocity;
-        position = new Vector2(50,50);
+        this.position = position;
     }
 
     public int getRadius() {

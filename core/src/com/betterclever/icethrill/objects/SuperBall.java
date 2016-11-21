@@ -11,8 +11,8 @@ import com.betterclever.icethrill.Constants;
 
 public class SuperBall extends Ball{
 
-    public SuperBall(ShapeRenderer renderer, Vector2 velocity) {
-        super(Constants.RADIUS_SUPERBALL,renderer,velocity);
+    public SuperBall(ShapeRenderer renderer, Vector2 velocity, Vector2 position) {
+        super(Constants.RADIUS_SUPERBALL,renderer,velocity,position);
     }
 
     @Override
