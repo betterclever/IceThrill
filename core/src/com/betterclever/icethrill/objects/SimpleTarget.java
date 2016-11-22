@@ -2,6 +2,8 @@ package com.betterclever.icethrill.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.betterclever.icethrill.Constants;
@@ -13,8 +15,8 @@ import com.betterclever.icethrill.Constants;
 public class SimpleTarget extends Target {
 
 
-    public SimpleTarget(Vector2 position, ShapeRenderer renderer) {
-        super(position, renderer);
+    public SimpleTarget(Vector2 position, SpriteBatch spriteBatch) {
+        super(position, spriteBatch);
         health = Constants.SIMPLE_TARGET_HEALTH;
     }
 
@@ -23,14 +25,19 @@ public class SimpleTarget extends Target {
 
         timePassed += delta ;
 
-        //Gdx.app.log("timePassed", String.valueOf(timePassed));
-        //Gdx.app.log("position",getPosition().toString());
+        Gdx.app.log("Target",getPosition().toString());
 
-        renderer.begin(ShapeRenderer.ShapeType.Filled);
-        renderer.setColor(Color.CYAN);
+        TextureRegion tr;
 
-        renderer.circle(getPosition().x,getPosition().y,Constants.RADIUS_ICEBALL);
+        int q = ( (int) (timePassed * 25)) % 7;
 
-        renderer.end();
+        tr = Constants.t[q];
+
+        Gdx.app.log("time", String.valueOf(q));
+
+        spriteBatch.begin();
+        spriteBatch.draw(tr,getPosition().x,getPosition().y,50,80);
+        spriteBatch.end();
+
     }
 }

@@ -1,5 +1,6 @@
 package com.betterclever.icethrill.objects;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
@@ -12,13 +13,13 @@ public abstract class Target {
 
     private Vector2 position;
     public int health;
-    public ShapeRenderer renderer;
+    public SpriteBatch spriteBatch;
 
     public float timePassed = 0;
 
-    public Target(Vector2 position, ShapeRenderer renderer) {
+    public Target(Vector2 position, SpriteBatch spriteBatch) {
         this.position = position;
-        this.renderer = renderer;
+        this.spriteBatch = spriteBatch;
     }
 
     public abstract void render(float delta);

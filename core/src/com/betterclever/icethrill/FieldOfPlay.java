@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
+import com.badlogic.gdx.graphics.g3d.particles.values.MeshSpawnShapeValue;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
@@ -27,8 +28,6 @@ import com.betterclever.icethrill.objects.SimpleTarget;
 import com.betterclever.icethrill.objects.SuperBall;
 import com.betterclever.icethrill.objects.Target;
 import com.betterclever.icethrill.objects.Cannon;
-
-import java.util.ArrayList;
 
 /**
  * Created by betterclever on 20/11/16.
@@ -128,13 +127,18 @@ public class FieldOfPlay extends InputAdapter implements Screen {
 
         timePassed += delta;
 
-        if(timePassed % 5 < 0.02){
-            targets.add(new SimpleTarget(
-                    new Vector2(
-                            (float) ( 2*viewport.getScreenWidth()/3 +  Math.random() * viewport.getScreenWidth() / 2 ),
-                            (float) Math.random()* viewport.getScreenHeight()/3),
-                    renderer));
+        if(timePassed % 5 < 0.02) {
+
+            float min = Gdx.graphics.getWidth() * 0.5f;
+
+            float xPos = min + (float) (Math.random() * min);
+            float yPos = 50;
+
+            Vector2 v = new Vector2(xPos, yPos);
+
+            targets.add(new SimpleTarget(v,spriteBatch));
         }
+
 
         //Gdx.app.log("World h:W",viewport.getScreenHeight() + " " + viewport.getScreenWidth());
 

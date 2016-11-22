@@ -2,6 +2,8 @@ package com.betterclever.icethrill.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -17,6 +19,8 @@ import com.badlogic.gdx.math.Vector2;
 public class Cannon  {
 
     SpriteBatch spriteBatch;
+    Music normal_sound;
+    Music heavy_sound;
 
     public float getAngle() {
         return angle;
@@ -32,8 +36,10 @@ public class Cannon  {
         this.angle = 45;
         this.spriteBatch = batch;
         image = new Texture("my_canon.png");
-
+        //heavy_sound = Gdx.audio.newMusic(Gdx.files.internal("cannon_super.mp3"));
+        //normal_sound = Gdx.audio.newMusic(Gdx.files.internal("cannon_sound.mp3"));
     }
+
 
     public void render(){
 
@@ -122,11 +128,19 @@ public class Cannon  {
     public Ball fire(SpriteBatch spriteBatch,boolean type) {
 
         Ball b;
+
+
         if(type) {
+            Music sound = Gdx.audio.newMusic(Gdx.files.internal("cannon_sound.mp3"));
+            sound.play();
             b = new IceBall(spriteBatch, new Vector2(0, 500).rotate(-angle), calculateTopOfCanon());
+            //sound.dispose();
         }
         else {
+            Music sound = Gdx.audio.newMusic(Gdx.files.internal("cannon_super.mp3"));
+            sound.play();
             b = new SuperBall(spriteBatch, new Vector2(0, 500).rotate(-angle), calculateTopOfCanon());
+            //sound.dispose();
         }
         return b;
     }
