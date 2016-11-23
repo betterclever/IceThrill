@@ -9,10 +9,10 @@ import com.betterclever.icethrill.Constants;
  * Created by betterclever on 21/11/16.
  */
 
-public class SimpleTarget extends Target {
+public class SuperTarget extends Target {
 
 
-    public SimpleTarget(Vector2 position, SpriteBatch spriteBatch) {
+    public SuperTarget(Vector2 position, SpriteBatch spriteBatch) {
         super(position, spriteBatch);
         health = Constants.SIMPLE_TARGET_HEALTH;
     }
@@ -25,13 +25,15 @@ public class SimpleTarget extends Target {
         //Gdx.app.log("Target",getPosition().toString());
 
         TextureRegion tr;
+
         int q = ( (int) (timePassed * 25)) % 7;
+
         tr = Constants.TARGET_TEXTURE_REGIONS[q];
 
         //Gdx.app.log("time", String.valueOf(q));
 
         spriteBatch.begin();
-        spriteBatch.draw(tr,getPosition().x,getPosition().y,50,80);
+        spriteBatch.draw(tr,getPosition().x,getPosition().y,80,130);
         spriteBatch.end();
 
     }

@@ -23,9 +23,11 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.betterclever.icethrill.objects.Ball;
+import com.betterclever.icethrill.objects.Explosion;
 import com.betterclever.icethrill.objects.IceBall;
 import com.betterclever.icethrill.objects.SimpleTarget;
 import com.betterclever.icethrill.objects.SuperBall;
+import com.betterclever.icethrill.objects.SuperTarget;
 import com.betterclever.icethrill.objects.Target;
 import com.betterclever.icethrill.objects.Cannon;
 
@@ -54,8 +56,8 @@ public class FieldOfPlay extends InputAdapter implements Screen {
     float angleOnTouchDown = 0.0f;
 
     DelayedRemovalArray<Ball> balls;
-
     DelayedRemovalArray<Target> targets;
+    DelayedRemovalArray<Explosion> explosions;
 
     boolean dragging = false;
     Animation anim;
@@ -77,6 +79,7 @@ public class FieldOfPlay extends InputAdapter implements Screen {
         cannon = new Cannon(spriteBatch);
 
         targets = new DelayedRemovalArray<Target>();
+        explosions = new DelayedRemovalArray<Explosion>();
 
         background = new Texture("ice2back.jpg");
         sprite = new Sprite(background);
@@ -119,8 +122,21 @@ public class FieldOfPlay extends InputAdapter implements Screen {
 
         balls.end();
 
+        explosions.begin();
+        for (int i = 0; i < explosions.size; i++) {
+            if(explosions.get(i).getTimePassed() > 0.8){
+                explosions.removeIndex(i);
+            }
+        }
+        explosions.end();
+
         for (Target t : targets) {
             t.render(delta);
+        }
+
+        Gdx.app.log("explosion", String.valueOf(explosions.size));
+        for (Explosion e : explosions){
+            e.render(delta);
         }
 
         timePassed += delta;
@@ -135,6 +151,12 @@ public class FieldOfPlay extends InputAdapter implements Screen {
             Vector2 v = new Vector2(xPos, yPos);
 
             targets.add(new SimpleTarget(v,spriteBatch));
+
+            xPos = min + (float) (Math.random() * min);
+            v = new Vector2(xPos, yPos);
+            targets.add(new SuperTarget(v,spriteBatch));
+
+            //explosions.add(new Explosion(v,spriteBatch));
         }
 
 
@@ -160,9 +182,9 @@ public class FieldOfPlay extends InputAdapter implements Screen {
 
                 if(b.bounds.overlaps(t.bounds)){
                     Gdx.app.log("collided","cool");
+                    explosions.add(new Explosion(t.getPosition(),spriteBatch));
                     targets.removeIndex(j);
                     balls.removeIndex(i);
-
                     break;
                 }
             }
