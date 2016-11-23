@@ -25,7 +25,7 @@ public class SimpleTarget extends Target {
 
         timePassed += delta ;
 
-        Gdx.app.log("Target",getPosition().toString());
+        //Gdx.app.log("Target",getPosition().toString());
 
         TextureRegion tr;
 
@@ -33,7 +33,7 @@ public class SimpleTarget extends Target {
 
         tr = Constants.t[q];
 
-        Gdx.app.log("time", String.valueOf(q));
+        //Gdx.app.log("time", String.valueOf(q));
 
         spriteBatch.begin();
         spriteBatch.draw(tr,getPosition().x,getPosition().y,50,80);

@@ -78,13 +78,11 @@ public class FieldOfPlay extends InputAdapter implements Screen {
 
         targets = new DelayedRemovalArray<Target>();
 
-        background = new Texture("volcano.png");
+        background = new Texture("ice2back.jpg");
         sprite = new Sprite(background);
 
-        //viewport.update(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-
         Gdx.input.setInputProcessor(this);
-        //anim = GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("assets/background.gif").read());
+
     }
 
 
@@ -101,7 +99,7 @@ public class FieldOfPlay extends InputAdapter implements Screen {
 
         spriteBatch.begin();
         sprite.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-        Gdx.app.log("Dim", "Width:" + Gdx.graphics.getWidth() + " Height: " + Gdx.graphics.getHeight());
+        //Gdx.app.log("Dim", "Width:" + Gdx.graphics.getWidth() + " Height: " + Gdx.graphics.getHeight());
         spriteBatch.draw(sprite,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         spriteBatch.end();
 
@@ -140,12 +138,10 @@ public class FieldOfPlay extends InputAdapter implements Screen {
         }
 
 
-        //Gdx.app.log("World h:W",viewport.getScreenHeight() + " " + viewport.getScreenWidth());
-
         targets.begin();
 
         for (int i = 0; i < targets.size; i++) {
-            if(targets.get(i).timePassed > 5){
+            if(targets.get(i).timePassed > 10){
                 targets.removeIndex(i);
             }
         }
@@ -153,9 +149,27 @@ public class FieldOfPlay extends InputAdapter implements Screen {
 
         cannon.render();
 
+        balls.begin();
+        targets.begin();
 
-        //Vector2 worldParameters = new Vector2(100,100);
+        for (int i = 0;i< balls.size;i++){
+            for(int j = 0;j < targets.size;j++){
 
+                Ball b = balls.get(i);
+                Target t = targets.get(j);
+
+                if(b.bounds.overlaps(t.bounds)){
+                    Gdx.app.log("collided","cool");
+                    targets.removeIndex(j);
+                    balls.removeIndex(i);
+
+                    break;
+                }
+            }
+        }
+
+        targets.end();
+        balls.end();
     }
 
     @Override
@@ -210,7 +224,7 @@ public class FieldOfPlay extends InputAdapter implements Screen {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
         if(dragging) {
-            Gdx.app.log("I am", " called");
+            //Gdx.app.log("I am", " called");
             Vector2 targetPosition = viewport.unproject(new Vector2(screenX, screenY));
             cannon.updateAngle(targetPosition);
 
@@ -229,11 +243,11 @@ public class FieldOfPlay extends InputAdapter implements Screen {
     public boolean keyDown (int keycode) {
 
         if(keycode == Input.Keys.X){
-            Gdx.app.log("tag","keydown");
+            //Gdx.app.log("tag","keydown");
             balls.add(cannon.fire(spriteBatch,true));
         }
         if(keycode == Input.Keys.Z){
-            Gdx.app.log("tag","keydown");
+            //Gdx.app.log("tag","keydown");
             balls.add(cannon.fire(spriteBatch,false));
         }
 

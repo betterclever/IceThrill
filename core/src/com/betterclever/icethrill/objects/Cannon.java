@@ -133,13 +133,13 @@ public class Cannon  {
         if(type) {
             Music sound = Gdx.audio.newMusic(Gdx.files.internal("cannon_sound.mp3"));
             sound.play();
-            b = new IceBall(spriteBatch, new Vector2(0, 500).rotate(-angle), calculateTopOfCanon());
+            b = new IceBall(spriteBatch, new Vector2(0, 700).rotate(-angle), calculateTopOfCanon());
             //sound.dispose();
         }
         else {
             Music sound = Gdx.audio.newMusic(Gdx.files.internal("cannon_super.mp3"));
             sound.play();
-            b = new SuperBall(spriteBatch, new Vector2(0, 500).rotate(-angle), calculateTopOfCanon());
+            b = new SuperBall(spriteBatch, new Vector2(0, 700).rotate(-angle), calculateTopOfCanon());
             //sound.dispose();
         }
         return b;

@@ -23,6 +23,8 @@ public class SuperBall extends Ball{
     @Override
     public void render() {
 
+        bounds.setPosition(position);
+
         spriteBatch.begin();
         spriteBatch.draw(textureRegion,position.x,position.y,getRadius(),getRadius(),2*getRadius(),2*getRadius(),1,1,angle);
         spriteBatch.end();

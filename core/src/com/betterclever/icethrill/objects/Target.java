@@ -2,6 +2,7 @@ package com.betterclever.icethrill.objects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -16,10 +17,13 @@ public abstract class Target {
     public SpriteBatch spriteBatch;
 
     public float timePassed = 0;
+    public Rectangle bounds;
 
     public Target(Vector2 position, SpriteBatch spriteBatch) {
         this.position = position;
         this.spriteBatch = spriteBatch;
+
+        bounds = new Rectangle(position.x,position.y,50,50);
     }
 
     public abstract void render(float delta);
