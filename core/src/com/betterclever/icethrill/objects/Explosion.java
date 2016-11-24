@@ -34,7 +34,7 @@ public class Explosion {
         int q = ( (int) (timePassed * 10)) % Constants.EXPLOSION_TEXTURE_REGIONS.length;
 
         Gdx.app.log("q", String.valueOf(q));
-        tr = Constants.EXPLOSION_TEXTURE_REGIONS[q];
+        tr = Constants.EXPLOSION_TEXTURE_REGIONS[q+3];
 
         spriteBatch.begin();
         spriteBatch.draw(tr,position.x ,position.y,50,80);

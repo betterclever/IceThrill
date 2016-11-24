@@ -1,15 +1,8 @@
 package com.betterclever.icethrill;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-
-import java.awt.Shape;
+import com.betterclever.icethrill.screens.FieldOfPlay;
+import com.betterclever.icethrill.screens.Scoreboard;
 
 public class IceThrillGame extends Game {
 	/*SpriteBatch batch;
@@ -20,8 +13,13 @@ public class IceThrillGame extends Game {
 	@Override
 	public void create () {
 
-		setScreen(new FieldOfPlay());
+		setScreen(new FieldOfPlay(this));
 
+	}
+
+
+	public void setScoreScreen(){
+		setScreen(new Scoreboard());
 	}
 /*
 	@Override

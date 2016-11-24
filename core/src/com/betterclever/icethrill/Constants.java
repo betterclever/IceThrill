@@ -40,5 +40,6 @@ public class Constants {
             new TextureRegion( new Texture("explosion9.png")),
             new TextureRegion( new Texture("explosion10.png"))
     };
+    public static final Texture LIFE = new Texture("heart.png");
 
 }
