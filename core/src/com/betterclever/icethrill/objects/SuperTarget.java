@@ -2,6 +2,7 @@ package com.betterclever.icethrill.objects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.betterclever.icethrill.Constants;
 
@@ -14,7 +15,9 @@ public class SuperTarget extends Target {
 
     public SuperTarget(Vector2 position, SpriteBatch spriteBatch) {
         super(position, spriteBatch);
-        health = Constants.SIMPLE_TARGET_HEALTH;
+        health = Constants.SUPER_TARGET_HEALTH;
+        bounds = new Rectangle(position.x+10,position.y,60,100);
+        hitpoints = Constants.SUPER_TARGET_HEALTH/2;
     }
 
     @Override

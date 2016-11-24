@@ -60,3 +60,7 @@ eclipse {
         natures 'org.multi-os-engine.project'
     }
 }
+
+dependencies{
+    compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-ios"
+}

@@ -51,6 +51,8 @@ public class Cannon  {
             angle += 0.4;
         }
 
+        Gdx.app.log("angle", String.valueOf(angle));
+
         clampAngle();
 
         spriteBatch.begin();
@@ -80,7 +82,6 @@ public class Cannon  {
 
         angle -= angleDiff;
         clampAngle();
-
 
         return angleDiff;
     }
@@ -113,11 +114,12 @@ public class Cannon  {
         int y = (145) ;
 
         Vector2 v = new  Vector2(x,y);
+
         Vector2 shifted = new Vector2(67,51);
 
         v = v.sub(shifted);
 
-        v.rotate(-angle + 30);
+        v.rotate(-angle+29);
 
         v.add(shifted);
 
@@ -133,13 +135,13 @@ public class Cannon  {
         if(type) {
             Music sound = Gdx.audio.newMusic(Gdx.files.internal("cannon_sound.mp3"));
             sound.play();
-            b = new IceBall(spriteBatch, new Vector2(0, 700).rotate(-angle), calculateTopOfCanon());
+            b = new IceBall(spriteBatch, new Vector2(0, 700).rotate(-angle-10), calculateTopOfCanon());
             //sound.dispose();
         }
         else {
             Music sound = Gdx.audio.newMusic(Gdx.files.internal("cannon_super.mp3"));
             sound.play();
-            b = new SuperBall(spriteBatch, new Vector2(0, 700).rotate(-angle), calculateTopOfCanon());
+            b = new SuperBall(spriteBatch, new Vector2(0, 700).rotate(-angle-10), calculateTopOfCanon());
             //sound.dispose();
         }
         return b;

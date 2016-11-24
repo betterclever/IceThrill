@@ -1,4 +1,4 @@
-package com.betterclever.icethrill.screens;
+package com.betterclever.icethrill;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -17,23 +16,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.betterclever.icethrill.Constants;
-import com.betterclever.icethrill.FirebaseHelper;
-import com.betterclever.icethrill.IceThrillGame;
-import com.betterclever.icethrill.User;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 
-public class Scoreboard extends InputAdapter implements Screen {
+public class GameOver extends InputAdapter implements Screen {
 
-    public static final String TAG = Scoreboard.class.getName();
+    public static final String TAG = GameOver.class.getName();
 
     IceThrillGame game;
-    List<User> userList;
 
     ShapeRenderer renderer;
     SpriteBatch batch;
@@ -44,12 +33,12 @@ public class Scoreboard extends InputAdapter implements Screen {
     FreeTypeFontGenerator generator;
     int score;
 
-    public Scoreboard(IceThrillGame game) {
+    public GameOver(IceThrillGame game, int score) {
         this.game = game;
-        userList = new ArrayList<User>();
+        this.score = score;
+
         FirebaseHelper helper = new FirebaseHelper();
-        helper.getHighScores();
-        userList = helper.users;
+        helper.addScore(new User("betterclever",score));
 
     }
 
@@ -63,7 +52,6 @@ public class Scoreboard extends InputAdapter implements Screen {
         Gdx.input.setInputProcessor(this);
         initFonts();
         font24 = new BitmapFont();
-        initFonts();
         font25 = new BitmapFont();
         // TODO: Set the font scale using the constant we defined
         font24.getData().setScale(Constants.DIFFICULTY_LABEL_SCALE);
@@ -109,7 +97,7 @@ public class Scoreboard extends InputAdapter implements Screen {
         renderer.setProjectionMatrix(viewport.getCamera().combined);
         renderer.begin(ShapeType.Filled);
         renderer.setColor(new Color(0, 0, 0, 0.5f));
-        renderer.rect(0,580,Constants.WORLD_WIDTH,100 );
+        renderer.rect(0,320,Constants.WORLD_WIDTH,100 );
         renderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
@@ -125,14 +113,8 @@ public class Scoreboard extends InputAdapter implements Screen {
         params.shadowOffsetY=2;
         font25 = generator.generateFont(params);
         final GlyphLayout mediumLayout = new GlyphLayout(font24, Constants.MEDIUM_LABEL);
-        font25.draw(batch, "High Scores", Constants.WORLD_WIDTH / 2, 660, 0, Align.center, false);
-
-        int q = 500;
-        for(User user: userList) {
-            font24.draw(batch, user.getName() +": " + user.getScore() , Constants.WORLD_WIDTH / 2, q, 0, Align.center, false);
-            q -= 60;
-        }
-
+        font25.draw(batch, "GAME  OVER", Constants.WORLD_WIDTH / 2, 390, 0, Align.center, false);
+        font24.draw(batch, "Score: " + score, Constants.WORLD_WIDTH / 2, 300, 0, Align.center, false);
         final GlyphLayout hardLayout = new GlyphLayout(font24, Constants.HARD_LABEL);
         //font24.draw(batch, Constants.HARD_LABEL, Constants.HARD_CENTER.x, Constants.HARD_CENTER.y + hardLayout.height / 2, 0, Align.center, false);
 
@@ -174,14 +156,14 @@ public class Scoreboard extends InputAdapter implements Screen {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
         game.setHomeScreen();
-        return true;
 
+        return true;
     }
     private void initFonts() {
         generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Arcon-Rounded-Regular.otf"));
         params = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
-        params.size = 30;
+        params.size = 60;
         params.color = Color.WHITE;
         font24 = generator.generateFont(params);
     }

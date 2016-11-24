@@ -17,13 +17,12 @@ public abstract class Target {
     public SpriteBatch spriteBatch;
 
     public float timePassed = 0;
+    public int hitpoints = 0;
     public Rectangle bounds;
 
     public Target(Vector2 position, SpriteBatch spriteBatch) {
         this.position = position;
         this.spriteBatch = spriteBatch;
-
-        bounds = new Rectangle(position.x,position.y,50,50);
     }
 
     public abstract void render(float delta);
@@ -31,5 +30,6 @@ public abstract class Target {
     public Vector2 getPosition() {
         return position;
     }
+
 
 }

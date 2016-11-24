@@ -17,16 +17,18 @@ public abstract class Ball implements Movement {
     public Vector2 position;
     public Vector2 velocity;
     public float angle = 0;
+    private int damage;
 
     public Rectangle bounds;
 
     protected SpriteBatch spriteBatch;
 
-    public Ball(int radius, SpriteBatch spriteBatch, Vector2 velocity, Vector2 position){
+    public Ball(int radius, SpriteBatch spriteBatch, Vector2 velocity, Vector2 position, int damage){
         this.radius = radius;
         this.spriteBatch = spriteBatch;
         this.velocity = velocity;
         this.position = position;
+        this.damage = damage;
 
         bounds = new Rectangle();
 
@@ -60,4 +62,7 @@ public abstract class Ball implements Movement {
         updateAngle(delta);
     }
 
+    public int getDamage() {
+        return damage;
+    }
 }

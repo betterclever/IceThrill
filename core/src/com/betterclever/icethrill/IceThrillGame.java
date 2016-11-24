@@ -13,14 +13,30 @@ public class IceThrillGame extends Game {
 	@Override
 	public void create () {
 
-		setScreen(new FieldOfPlay(this));
+		setScreen(new HomeScreen(this));
 
 	}
 
 
 	public void setScoreScreen(){
-		setScreen(new Scoreboard());
+		setScreen(new Scoreboard(this));
 	}
+
+	public void setGameOverScreen(int score) {
+		setScreen(new GameOver(this,score));
+	}
+
+    public void setGameScreen(){
+        setScreen(new FieldOfPlay(this));
+    }
+
+    public void setHowToPlay() {
+        setScreen(new HowToPlay(this));
+    }
+
+    public void setHomeScreen(){
+        setScreen(new HomeScreen(this));
+    }
 /*
 	@Override
 	public void render () {

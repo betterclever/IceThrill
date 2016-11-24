@@ -12,4 +12,5 @@ eclipse.project {
 
 dependencies {
     compile 'com.google.code.gson:gson:2.4'
+    compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
 }

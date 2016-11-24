@@ -21,7 +21,7 @@ public class Life {
     }
 
     public boolean reduce(){
-        life --;
+        life--;
         return life != 0;
     }
 
@@ -38,9 +38,9 @@ public class Life {
 
     public void render(){
 
-        Gdx.app.log("cool","I am here");
+        //Gdx.app.log("cool","I am here");
 
-        Vector2 current = new Vector2(10,Gdx.graphics.getHeight() - 50);
+        Vector2 current = new Vector2(10,Constants.WORLD_HEIGHT-50);
         spriteBatch.begin();
         for (int i = 0; i < (life - 1)/10 + 1; i++) {
             spriteBatch.draw(Constants.LIFE,current.x,current.y,40,40);
