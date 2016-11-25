@@ -42,7 +42,7 @@ moe {
     xcode {
         mainTarget 'ios-moe'
         packageName 'com.betterclever.icethrill'
-        deploymentTarget = '9.0'
+        deploymentTarget = '10.0'
         xcodeProjectDirPath 'xcode'
         generateProject false
     }

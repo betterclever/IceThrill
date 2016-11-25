@@ -8,23 +8,18 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.betterclever.icethrill.Constants;
-import com.betterclever.icethrill.FirebaseHelper;
+import com.betterclever.icethrill.utilities.Constants;
+import com.betterclever.icethrill.utilities.FirebaseHelper;
 import com.betterclever.icethrill.IceThrillGame;
-import com.betterclever.icethrill.User;
+import com.betterclever.icethrill.utilities.User;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 
@@ -58,29 +53,26 @@ public class Scoreboard extends InputAdapter implements Screen {
         renderer = new ShapeRenderer();
         batch = new SpriteBatch();
         background = new Texture("gameoverbg.jpg");
-        // TODO: Initialize a FitViewport with the difficulty world size constant
+
         viewport = new ExtendViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
         Gdx.input.setInputProcessor(this);
         initFonts();
-        font24 = new BitmapFont();
+
         initFonts();
-        font25 = new BitmapFont();
-        // TODO: Set the font scale using the constant we defined
+
         font24.getData().setScale(Constants.DIFFICULTY_LABEL_SCALE);
         font24.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
     }
 
     @Override
     public void render(float delta) {
-        // TODO: Apply the viewport
+
         viewport.apply();
         Gdx.gl.glClearColor(Constants.BACKGROUND_COLOR.r, Constants.BACKGROUND_COLOR.g, Constants.BACKGROUND_COLOR.b, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // TODO: Set the ShapeRenderer's projection matrix
         renderer.setProjectionMatrix(viewport.getCamera().combined);
 
-        // TODO: Use ShapeRenderer to draw the buttons
         renderer.begin(ShapeType.Filled);
 
         renderer.setColor(Constants.EASY_COLOR);
@@ -94,12 +86,7 @@ public class Scoreboard extends InputAdapter implements Screen {
 
         renderer.end();
 
-
-        // TODO: Set the SpriteBatche's projection matrix
         batch.setProjectionMatrix(viewport.getCamera().combined);
-
-        // TODO: Use SpriteBatch to draw the labels on the buttons
-        // HINT: Use GlyphLayout to get vertical centering
 
         batch.begin();
         batch.draw(background, 0, 0, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
@@ -116,25 +103,19 @@ public class Scoreboard extends InputAdapter implements Screen {
 
         batch.begin();
 
-
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Arcon-Rounded-Regular.otf"));
-        params.size = 60;
-        params.color = Color.WHITE;
-        params.shadowColor=Color.GRAY;
-        params.shadowOffsetX=2;
-        params.shadowOffsetY=2;
-        font25 = generator.generateFont(params);
-        final GlyphLayout mediumLayout = new GlyphLayout(font24, Constants.MEDIUM_LABEL);
         font25.draw(batch, "High Scores", Constants.WORLD_WIDTH / 2, 660, 0, Align.center, false);
 
         int q = 500;
-        for(User user: userList) {
+        int z = userList.size();
+        if(z > 7){
+            z = 7;
+        }
+
+        for(int i = 0;i<z;i++) {
+            User user = userList.get(i);
             font24.draw(batch, user.getName() +": " + user.getScore() , Constants.WORLD_WIDTH / 2, q, 0, Align.center, false);
             q -= 60;
         }
-
-        final GlyphLayout hardLayout = new GlyphLayout(font24, Constants.HARD_LABEL);
-        //font24.draw(batch, Constants.HARD_LABEL, Constants.HARD_CENTER.x, Constants.HARD_CENTER.y + hardLayout.height / 2, 0, Align.center, false);
 
         batch.end();
 
@@ -143,7 +124,7 @@ public class Scoreboard extends InputAdapter implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        // TODO: Update the viewport
+
         viewport.update(width, height, true);
     }
 
@@ -178,11 +159,21 @@ public class Scoreboard extends InputAdapter implements Screen {
 
     }
     private void initFonts() {
+
         generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Arcon-Rounded-Regular.otf"));
         params = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
         params.size = 30;
         params.color = Color.WHITE;
         font24 = generator.generateFont(params);
+
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Arcon-Rounded-Regular.otf"));
+        params.size = 60;
+        params.color = Color.WHITE;
+        params.shadowColor=Color.GRAY;
+        params.shadowOffsetX=2;
+        params.shadowOffsetY=2;
+        font25 = generator.generateFont(params);
+
     }
 }

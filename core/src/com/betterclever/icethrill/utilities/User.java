@@ -1,4 +1,4 @@
-package com.betterclever.icethrill;
+package com.betterclever.icethrill.utilities;
 
 /**
  * Created by betterclever on 24/11/16.

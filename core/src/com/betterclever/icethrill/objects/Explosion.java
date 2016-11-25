@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.betterclever.icethrill.Constants;
+import com.betterclever.icethrill.utilities.Constants;
 
 /**
  * Created by betterclever on 23/11/16.

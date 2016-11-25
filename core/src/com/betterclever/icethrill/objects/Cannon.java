@@ -3,14 +3,11 @@ package com.betterclever.icethrill.objects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.betterclever.icethrill.utilities.Constants;
 
 /**
  * Created by betterclever on 21/11/16.
@@ -19,8 +16,6 @@ import com.badlogic.gdx.math.Vector2;
 public class Cannon  {
 
     SpriteBatch spriteBatch;
-    Music normal_sound;
-    Music heavy_sound;
 
     public float getAngle() {
         return angle;
@@ -29,46 +24,28 @@ public class Cannon  {
     float angle;
     Texture image;
 
-    boolean flicking,following;
-    Vector2 flickStart,targetPosition;
-
     public Cannon(SpriteBatch batch){
         this.angle = 45;
         this.spriteBatch = batch;
         image = new Texture("my_canon.png");
-        //heavy_sound = Gdx.audio.newMusic(Gdx.files.internal("cannon_super.mp3"));
-        //normal_sound = Gdx.audio.newMusic(Gdx.files.internal("cannon_sound.mp3"));
     }
 
 
     public void render(){
 
         if (Gdx.input.isKeyPressed(Keys.LEFT)){
-            angle -= 0.4;
+            angle -= 0.8;
         }
 
         if(Gdx.input.isKeyPressed(Keys.RIGHT)){
-            angle += 0.4;
+            angle += 0.8;
         }
-
-        Gdx.app.log("angle", String.valueOf(angle));
 
         clampAngle();
 
         spriteBatch.begin();
         spriteBatch.draw(new TextureRegion(image),0,0,67,51,150,150,1,1,-angle+60);
         spriteBatch.end();
-
-        /*renderer.begin(ShapeRenderer.ShapeType.Filled);
-        renderer.setColor(Color.CHARTREUSE);
-
-        renderer.rect(-40, 0,
-                0,0,
-                60, 200,
-                1.0f, 1.0f,
-                -angle);
-
-        renderer.end();*/
 
     }
 
@@ -77,8 +54,6 @@ public class Cannon  {
         Vector2 v = calculateMidOfCanon();
 
         float angleDiff = v.angle(targetPosition);
-
-        Gdx.app.log("angleDiff", String.valueOf(angleDiff));
 
         angle -= angleDiff;
         clampAngle();
@@ -100,7 +75,7 @@ public class Cannon  {
     private Vector2 calculateMidOfCanon(){
 
         int x = (-40 + 60) / 2;
-        int y = (200 + 0) / 2;
+        int y = (200) / 2;
 
         Vector2 v = new  Vector2(x,y);
         v.rotate(-angle);
@@ -133,16 +108,13 @@ public class Cannon  {
 
 
         if(type) {
-            Music sound = Gdx.audio.newMusic(Gdx.files.internal("cannon_sound.mp3"));
-            sound.play();
+            Constants.CANNON_NORMAL_SOUND.play();
             b = new IceBall(spriteBatch, new Vector2(0, 700).rotate(-angle-10), calculateTopOfCanon());
-            //sound.dispose();
+
         }
         else {
-            Music sound = Gdx.audio.newMusic(Gdx.files.internal("cannon_super.mp3"));
-            sound.play();
+            Constants.CANNON_SUPER_SOUND.play();
             b = new SuperBall(spriteBatch, new Vector2(0, 700).rotate(-angle-10), calculateTopOfCanon());
-            //sound.dispose();
         }
         return b;
     }

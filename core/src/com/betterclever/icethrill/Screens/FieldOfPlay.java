@@ -9,14 +9,13 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.betterclever.icethrill.Constants;
+import com.betterclever.icethrill.utilities.Constants;
 import com.betterclever.icethrill.IceThrillGame;
 import com.betterclever.icethrill.objects.Ball;
 import com.betterclever.icethrill.objects.Explosion;
@@ -56,16 +55,17 @@ public class FieldOfPlay extends InputAdapter implements Screen {
 
     boolean dragging = false;
     Animation anim;
+    BitmapFont font;
 
     Sprite sprite;
 
     IceThrillGame game;
+    int score = 0;
+    String currentUser;
 
     public FieldOfPlay(IceThrillGame game) {
         this.game = game;
     }
-
-    int score = 0;
 
     @Override
     public void show() {
@@ -76,6 +76,7 @@ public class FieldOfPlay extends InputAdapter implements Screen {
 
         accG = new Vector2(0, -50);
         position = new Vector2(10, 10);
+        font = new BitmapFont();
 
         balls = new DelayedRemovalArray<Ball>();
 
@@ -84,9 +85,21 @@ public class FieldOfPlay extends InputAdapter implements Screen {
         targets = new DelayedRemovalArray<Target>();
         explosions = new DelayedRemovalArray<Explosion>();
 
-        background = new Texture("ice2back.jpg");
-        sprite = new Sprite(background);
+        sprite = Constants.MAIN_SCREEN_BACKGROUND;
         Gdx.input.setInputProcessor(this);
+
+        currentUser = "anonymous";
+        Gdx.input.getTextInput(new Input.TextInputListener() {
+            @Override
+            public void input(String text) {
+                currentUser = text;
+            }
+
+            @Override
+            public void canceled() {
+
+            }
+        }, "Enter Username", "", "");
 
     }
 
@@ -100,9 +113,10 @@ public class FieldOfPlay extends InputAdapter implements Screen {
         viewport.apply();
 
         spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
+        renderer.setProjectionMatrix(viewport.getCamera().combined);
 
         spriteBatch.begin();
-        sprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        sprite.setSize(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
         spriteBatch.draw(sprite, 0, 0, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
         spriteBatch.end();
 
@@ -113,15 +127,17 @@ public class FieldOfPlay extends InputAdapter implements Screen {
             b.render();
         }
 
-        if (continuousHits == 2) {
+        renderer.begin();
+
+        renderer.end();
+
+        if (continuousHits == 5) {
             continuousHits = 0;
             life.increase();
         }
 
         if (life.lifeOver()) {
-            game.setGameOverScreen(score);
-            hide();
-            dispose();
+            game.setGameOverScreen(score, currentUser);
         }
 
         life.render();
@@ -155,7 +171,6 @@ public class FieldOfPlay extends InputAdapter implements Screen {
         timePassed += delta;
 
         generateTarget();
-
 
         targets.begin();
 
@@ -199,27 +214,26 @@ public class FieldOfPlay extends InputAdapter implements Screen {
 
     private void generateTarget() {
 
-        // Generating Pseudo Random Targets
-        if (timePassed % 5 > 0.02) {
+        if (timePassed % 5 > 0.04) {
             return;
         }
 
         int q = (int) (((timePassed * Math.random()) % 1) * 100);
-        float position = (float) Constants.WORLD_WIDTH / 2.7f + (float) (Constants.WORLD_WIDTH / 2 * Math.random());
-        Gdx.app.log("Position", String.valueOf(position));
+        float position = (float) Constants.WORLD_WIDTH / 2.5f + (float) (Constants.WORLD_WIDTH / 2 * Math.random());
+
         if (q % 2 == 0) {
             targets.add(new SimpleTarget(new Vector2(position, 50), spriteBatch));
         } else {
             targets.add(new SuperTarget(new Vector2(position, 50), spriteBatch));
         }
+
+        System.gc();
     }
 
     private void drawScore() {
 
         Vector2 pos = new Vector2(Constants.WORLD_WIDTH - 250, Constants.WORLD_HEIGHT - 20);
-
         spriteBatch.begin();
-        BitmapFont font = new BitmapFont();
         font.setColor(Color.WHITE);
         font.getData().setScale(2);
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
@@ -234,16 +248,22 @@ public class FieldOfPlay extends InputAdapter implements Screen {
     }
 
     @Override
-    public void pause() {}
+    public void pause() {
+    }
 
     @Override
-    public void resume() {}
+    public void resume() {
+    }
 
     @Override
-    public void hide() {}
+    public void hide() {
+    }
 
     @Override
-    public void dispose() {}
+    public void dispose() {
+        renderer.dispose();
+        spriteBatch.dispose();
+    }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
